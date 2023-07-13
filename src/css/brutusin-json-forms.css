@@ -33,13 +33,13 @@ a, a:hover, a:visited, a:active, a:focus {
 }
 .loading-icon{
     position: absolute;
-    top:14px;
+    top:2px;
     left:50%;
     z-index : 11;
 }
 .loading-icon-select{
     position: absolute;
-    top:14px;
+    top:2px;
     left:50%;
     z-index : 11;
 }
@@ -49,9 +49,13 @@ a, a:hover, a:visited, a:active, a:focus {
     left:3px;
     z-index : 11;
 }
-.glyphicon-refresh-animate {
-    animation: spin .7s infinite linear;
-    -webkit-animation: spin2 .7s infinite linear;
+
+.form-inline label {
+    justify-content: end;
+}
+
+.accordion>.card {
+    overflow: unset;
 }
 
 @-webkit-keyframes spin2 {
