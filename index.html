@@ -125,7 +125,14 @@
                     {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"password":{"title":"Password","type":"string","format":"password","description":"Password field would have the text masked.","required":true},"email":{"title":"Email","type":"string","format":"email","description":"Email field would need to follow the format of name@domain.com in order to pass the validation.","required":true},"date":{"title":"Date","type":"string","format":"date","description":"Use the date picker to pick the date.","required":true},"time":{"title":"Time","type":"string","format":"time","description":"Use the time picker to pick the time.","required":true}}},
                     null,
                     null,
-                    "Additional input type format such as `password`, `email`, `date` and `time`."]
+                    "Additional input type format such as `password`, `email`, `date` and `time`."],
+                [
+                    "Range input type",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"range":{"type":"string","title":"A numeric range","format":"range","minimum":10,"maximum":50,"step":5,"description":"This range has a minimum of 10, maximum of 50, and a step of 5."}}},
+                    null,
+                    null,
+                    "You can adjust the minimum and maximum value of the range by specifying the `minimum` and `maximum` field, and also the increment by using `step` field."
+                ]
             ];
 
             var selectedTab = "schema";
