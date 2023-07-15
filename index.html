@@ -125,7 +125,14 @@
                     {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"password":{"title":"Password","type":"string","format":"password","description":"Password field would have the text masked.","required":true},"email":{"title":"Email","type":"string","format":"email","description":"Email field would need to follow the format of name@domain.com in order to pass the validation.","required":true},"date":{"title":"Date","type":"string","format":"date","description":"Use the date picker to pick the date.","required":true},"time":{"title":"Time","type":"string","format":"time","description":"Use the time picker to pick the time.","required":true}}},
                     null,
                     null,
-                    "Additional input type format such as `password`, `email`, `date` and `time`."]
+                    "Additional input type format such as `password`, `email`, `date` and `time`."],
+                [
+                    "Phone number input type",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"telephone_number":{"type":"string","title":"Phone number","format":"tel","pattern":"^[\\d \\-()+]*$","description":"This regex accepts digits, round brackets (), dashes (-) and plus sign (+). Eg: +60(11)-123-1234","required":true}}},
+                    null,
+                    null,
+                    "This is the `tel` input type example. It may looks no difference than a normal textbox but it alters the keyboard for mobile devices when inputting the value. Most phone devices would allows digit and certain symbol input only when it detects the input type `tel`."
+                ]
             ];
 
             var selectedTab = "schema";
