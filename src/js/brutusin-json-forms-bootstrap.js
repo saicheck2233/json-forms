@@ -245,7 +245,7 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     BrutusinForms.onResolutionFinished = BrutusinForms.bootstrap.hideLoading;
 
     BrutusinForms.onValidationSuccess = function (element) {
-        element.parentNode.className = element.parentNode.className.replace(" has-error", "");
+        element.className = element.className.replace(" is-invalid", "");
     }
     BrutusinForms.onValidationError = function (element, message) {
 
@@ -271,8 +271,8 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
             }
 
             element.title = BrutusinForms.messages["validationError"];
-            if (!element.parentNode.className.includes("has-error")) {
-                element.parentNode.className += " has-error";
+            if (!element.className.includes("is-invalid")) {
+                element.className += " is-invalid";
             }
             element.focus();
             $(element).popover({
@@ -289,7 +289,7 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
                     element.setAttribute("data-trigger", dataTrigger);
                     element.setAttribute("data-content", dataContent);
                 } else {
-                    $(element).popover('destroy');
+                    $(element).popover('dispose');
                     element.removeAttribute("data-toggle");
                     element.removeAttribute("data-trigger");
                     element.removeAttribute("data-content");
