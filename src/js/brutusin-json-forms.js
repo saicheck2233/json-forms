@@ -228,12 +228,25 @@ if (typeof brutusin === "undefined") {
                     input.type = "date";
                 } else if (s.format === "time") {
                     input.type = "time";
+                } else if (s.format === "tel") {
+                    input.type = "tel";
                 } else if (s.format === "email") {
                     input.type = "email";
                 } else if (s.format === "password") {
                     input.type = "password";
                 } else if (s.format === "url") {
                     input.type = "url";
+                } else if (s.format === "range") {
+                    input.type = "range";
+                    if (s.minimum) {
+                        input.min = s.minimum;
+                    }
+                    if (s.maximum) {
+                        input.max = s.maximum;
+                    }
+                    if (s.step) {
+                        input.step = s.step;
+                    }
                 } else if (s.format === "text") {
                     input = document.createElement("textarea");
                 } else {
@@ -375,14 +388,17 @@ if (typeof brutusin === "undefined") {
             var input;
             if (s.format === "radio") {
                 input = document.createElement("div");
+                input.className = "form-check form-check-inline";
                 for (var i = 0; i < s.enum.length; i++) {
                     var radioInput = document.createElement("input");
                     radioInput.type = "radio";
                     radioInput.name = s.$id.substring(2);
                     radioInput.value = s.enum[i];
                     radioInput.id = s.enum[i];
+                    radioInput.className = "form-check-input";
                     var label = document.createElement("label");
                     label.htmlFor = s.enum[i];
+                    label.className = "form-check-label";
                     var labelText = document.createTextNode(s.enum[i]);
                     appendChild(label, labelText);
                     if (value && s.enum[i] === value) {
@@ -397,14 +413,17 @@ if (typeof brutusin === "undefined") {
             }
             else if (s.format === "checkbox") {
                 input = document.createElement("div");
+                input.className = "form-check form-check-inline";
                 for (var i = 0; i < s.enum.length; i++) {
                     checkbox = document.createElement("input");
                     checkbox.type = "checkbox";
                     checkbox.name = s.enum[i];
                     checkbox.value = s.enum[i];
+                    checkbox.className = "form-check-input";
 
                     var label = document.createElement("label");
                     label.htmlFor = s.enum[i];
+                    label.className = "form-check-label";
                     var labelText = document.createTextNode(s.enum[i]);
                     appendChild(label, labelText);
                     if (value) {
