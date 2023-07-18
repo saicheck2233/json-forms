@@ -174,17 +174,17 @@
                 $("#jsonAlert").hide();
                 try {
                     message = "The was a syntax error in the schema JSON";
-                    tabId = "schema";
+                    tabId = "schema-tab";
                     eval("schema=" + inputString.schema);
                     if (inputString.data) {
                         message = "The was a syntax error in the initial data JSON";
-                        tabId = "data";
+                        tabId = "data-tab";
                         eval("data=" + inputString.data);
                     } else {
                         data = null;
                     }
                     if (inputString.resolver) {
-                        tabId = "resolver";
+                        tabId = "resolver-tab";
                         message = "The was a syntax error in the resolver code";
                         eval("resolver=" + inputString.resolver);
                         if ("function" !== typeof resolver) {
@@ -193,7 +193,7 @@
                     }
                 } catch (err) {
                     document.getElementById('error-message').innerHTML = message + (err ? ". " + err : "");
-                    $('[href=#' + tabId + ']').tab('show');
+                    $('button[id=' + tabId + ']').tab('show');
                     $("#jsonAlert").show();
                     return;
                 }
@@ -261,8 +261,8 @@
                                 <div role="tabpanel" class="tab-pane fade " id="data" role="tabpanel" aria-labelledby="data-tab"></div>
                                 <div role="tabpanel" class="tab-pane fade " id="resolver" role="tabpanel" aria-labelledby="resolver-tab"></div>
                             </div>
-                            <div class="alert alert-danger in" role="alert" id="jsonAlert" style="display:none">
-                                <a href="#" onclick='$("#jsonAlert").hide();' class="close" >&times;</a>
+                            <div class="alert alert-danger in" role="alert" id="jsonAlert" style="display:none; margin-top:1rem;">
+                                <span onclick='$("#jsonAlert").hide();' class="close" >&times;</span>
                                 <strong>Error!</strong> <span id="error-message"></span>
                             </div>
                             <button class="btn btn-primary mt-3" onclick="generateForm()">Create form</button>
