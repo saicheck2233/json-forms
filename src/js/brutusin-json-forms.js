@@ -889,6 +889,7 @@ if (typeof brutusin === "undefined") {
             initialValue = data;
             var form = document.createElement("form");
             form.className = "brutusin-form";
+            form.id = "brutusin-form";
             form.onsubmit = function (event) {
                 return false;
             };
