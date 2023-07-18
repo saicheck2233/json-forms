@@ -263,6 +263,13 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     BrutusinForms.onResolutionFinished = BrutusinForms.bootstrap.hideLoading;
 
     BrutusinForms.onValidationSuccess = function (element) {
+        if (element.tagName === "DIV" && element.childElementCount !== 0) {
+            for (var i = 0; i < element.childElementCount; i++) {
+                if (element.childNodes[i].tagName === "INPUT") {
+                    element.childNodes[i].className = element.childNodes[i].className.replace(" is-invalid", "");
+                }
+            }
+        }
         element.className = element.className.replace(" is-invalid", "");
     }
     BrutusinForms.onValidationError = function (element, message) {
