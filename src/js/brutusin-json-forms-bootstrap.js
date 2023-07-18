@@ -33,7 +33,7 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     BrutusinForms.addDecorator(function (element, schema) {
         if (element.tagName) {
             var tagName = element.tagName.toLowerCase();
-            if (tagName === "input" && (element.type !== "checkbox" && element.type !== "radio") || tagName === "textarea") {
+            if (tagName === "input" && (element.type !== "checkbox" && element.type !== "radio" && element.type !== "range") || tagName === "textarea") {
                 element.className += " form-control";
             } else if (tagName === "select") {
                 element.className += " form-control";
@@ -44,9 +44,22 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
                         element.removeChild(element.firstChild);
                     }
                 }
-                element.className += " btn btn-primary  btn-xs";
-            } else if (tagName === "form") {
-                element.className += " form-inline";
+                element.className += " btn btn-warning btn-sm";
+            }
+        }
+    });
+
+    //Customize range input value
+    BrutusinForms.addDecorator(function (element, schema) {
+        if (element.tagName) {
+            var tagName = element.tagName.toLowerCase();
+            if (tagName === "input" && element.type === "range") {
+                element.className += " form-control-range";
+                var elementId = element.id;
+                element.setAttribute("oninput", "rangevalue" + elementId.substring(elementId.length - 3, elementId.length) + ".value=value");
+                var output = document.createElement("output");
+                output.id = "rangevalue" + elementId.substring(elementId.length - 3, elementId.length);
+                element.parentNode.appendChild(output);
             }
         }
     });
