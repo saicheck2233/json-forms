@@ -126,12 +126,16 @@
                     null,
                     null,
                     "Additional input type format such as `password`, `email`, `date` and `time`."],
-                [
-                    "Phone number input type",
+                ["Phone number input type",
                     {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"telephone_number":{"type":"string","title":"Phone number","format":"tel","pattern":"^[\\d \\-()+]*$","description":"This regex accepts digits, round brackets (), dashes (-) and plus sign (+). Eg: +60(11)-123-1234","required":true}}},
                     null,
                     null,
-                    "This is the `tel` input type example. It may looks no difference than a normal textbox but it alters the keyboard for mobile devices when inputting the value. Most phone devices would allows digit and certain symbol input only when it detects the input type `tel`."
+                    "This is the `tel` input type example. It may looks no difference than a normal textbox but it alters the keyboard for mobile devices when inputting the value. Most phone devices would allows digit and certain symbol input only when it detects the input type `tel`."],
+                ["URL input type example",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"url":{"type":"string","title":"URL","format":"url","description":"A URL field"}}},
+                    null,
+                    null,
+                    "URL input type field. Default regex pattern is `/(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/`. Custom pattern validation can be override with specifying the field `pattern` in the schema."
                 ]
             ];
 
@@ -174,17 +178,17 @@
                 $("#jsonAlert").hide();
                 try {
                     message = "The was a syntax error in the schema JSON";
-                    tabId = "schema";
+                    tabId = "schema-tab";
                     eval("schema=" + inputString.schema);
                     if (inputString.data) {
                         message = "The was a syntax error in the initial data JSON";
-                        tabId = "data";
+                        tabId = "data-tab";
                         eval("data=" + inputString.data);
                     } else {
                         data = null;
                     }
                     if (inputString.resolver) {
-                        tabId = "resolver";
+                        tabId = "resolver-tab";
                         message = "The was a syntax error in the resolver code";
                         eval("resolver=" + inputString.resolver);
                         if ("function" !== typeof resolver) {
@@ -193,7 +197,7 @@
                     }
                 } catch (err) {
                     document.getElementById('error-message').innerHTML = message + (err ? ". " + err : "");
-                    $('[href=#' + tabId + ']').tab('show');
+                    $('button[id=' + tabId + ']').tab('show');
                     $("#jsonAlert").show();
                     return;
                 }
@@ -261,8 +265,8 @@
                                 <div role="tabpanel" class="tab-pane fade " id="data" role="tabpanel" aria-labelledby="data-tab"></div>
                                 <div role="tabpanel" class="tab-pane fade " id="resolver" role="tabpanel" aria-labelledby="resolver-tab"></div>
                             </div>
-                            <div class="alert alert-danger in" role="alert" id="jsonAlert" style="display:none">
-                                <a href="#" onclick='$("#jsonAlert").hide();' class="close" >&times;</a>
+                            <div class="alert alert-danger in" role="alert" id="jsonAlert" style="display:none; margin-top:1rem;">
+                                <span onclick='$("#jsonAlert").hide();' class="close" >&times;</span>
                                 <strong>Error!</strong> <span id="error-message"></span>
                             </div>
                             <button class="btn btn-primary mt-3" onclick="generateForm()">Create form</button>
