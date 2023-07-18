@@ -130,6 +130,11 @@ form.brutusin-form .error-message {
 .brutusin-form.form-inline label {
     justify-content: end;
 }
+.brutusin-form .form-control-range {
+    display: inline-block;
+    width: 95% !important;
+    margin-right: 15px;
+}
 .container {
     padding-top: 10px;
     padding-bottom: 30px;

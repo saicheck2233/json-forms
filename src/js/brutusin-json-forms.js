@@ -236,6 +236,17 @@ if (typeof brutusin === "undefined") {
                     input.type = "password";
                 } else if (s.format === "url") {
                     input.type = "url";
+                } else if (s.format === "range") {
+                    input.type = "range";
+                    if (s.minimum) {
+                        input.min = s.minimum;
+                    }
+                    if (s.maximum) {
+                        input.max = s.maximum;
+                    }
+                    if (s.step) {
+                        input.step = s.step;
+                    }
                 } else if (s.format === "text") {
                     input = document.createElement("textarea");
                 } else {
