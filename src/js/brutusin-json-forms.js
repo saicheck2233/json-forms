@@ -228,6 +228,8 @@ if (typeof brutusin === "undefined") {
                     input.type = "date";
                 } else if (s.format === "time") {
                     input.type = "time";
+                } else if (s.format === "tel") {
+                    input.type = "tel";
                 } else if (s.format === "email") {
                     input.type = "email";
                 } else if (s.format === "password") {
