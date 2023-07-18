@@ -32,7 +32,7 @@
         <script src="src/js/brutusin-json-forms-bootstrap.js"></script>
         <script lang="javascript">
             var BrutusinForms = brutusin["json-forms"];
-            BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", null, function (element) {
+            BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "bi-search", null, function (element) {
                 alert("user callback on element " + element)
             });
             BrutusinForms.bootstrap.addFormatDecorator("color", "color");
@@ -92,7 +92,7 @@
                     null,
                     "`textarea` rendering for `string` schemas"],
                 ["Custom string formats",
-                    {"$schema": "http://json-schema.org/draft-03/schema#", "type": "object", "properties": {"file": {"type": "string", "format": "inputstream", "description": "Using a custom format decorator with **glyphicon** via `addFormatDecorator(...)` of the bootstrap extension script"}, "color": {"type": "string", "format": "color", "description": "Using a custom format decorator via `addFormatDecorator(...)` of the bootstrap extension script"}, "date": {"type": "string", "format": "date", "description": "Using a custom format decorator with glyphicon via `addFormatDecorator(...)` of the bootstrap extension script"}}},
+                    {"$schema": "http://json-schema.org/draft-03/schema#", "type": "object", "properties": {"file": {"type": "string", "format": "inputstream", "description": "Using a custom format decorator with **bootstrapIcon** via `addFormatDecorator(...)` of the bootstrap extension script"}, "color": {"type": "string", "format": "color", "description": "Using a custom format decorator via `addFormatDecorator(...)` of the bootstrap extension script"}, "date": {"type": "string", "format": "date", "description": "Using a custom format decorator with Bootstrap Icon via `addFormatDecorator(...)` of the bootstrap extension script"}}},
                     null,
                     null,
                     "Input types can be chosen for custom `string` schema formats via `BrutusinForms.bootstrap.addFormatDecorator(...)`. See current registered decorators at this page source code."],
@@ -126,6 +126,37 @@
                     null,
                     null,
                     "Additional input type format such as `password`, `email`, `date` and `time`."],
+                ["Collapsible form",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","collapsible":true,"title":"Collapsible Form","properties":{"username":{"title":"Username","type":"string","description":"Username","required":true},"password":{"title":"Password","type":"string","format":"password","required":true}}},
+                    null,
+                    null,
+                    "Collapsible form. Must put at the parent level with the `collapsible` field, `title` field is optional."],
+                ["Custom class Name",
+                   {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"username":{"title":"Username","type":"string","description":"The class name is applied in this form field.","required":true,"class":"your-class-name-here"}}},
+                    null,
+                    null,
+                    "Custom class name is supported. Add the `class` field and the class name and it shall apply to that form field."],
+                ["Registration form example",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"name":{"title":"Full Name","required":true,"type":"string"},"username":{"title":"Username","type":"string","required":true,"minLength":6,"maxLength":20},"password":{"title":"Password","type":"string","format":"password","required":true,"description":"Password must contains at least 1 lowercase, 1 uppercase, 1 number and 1 special character with length equals or more than 8","pattern":"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"},"email":{"title":"Email Address","type":"string","format":"email","required":true,"description":"Email has a default Regex pattern which validates against `name@domain.com` format. Add `pattern` field for custom pattern."},"gender":{"title":"Gender","type":"boolean","enum":["Male","Female","Prefer not to reveal"],"format":"radio","required":true},"dob":{"title":"Birthday","type":"string","format":"date"},"subscription":{"title":"Subscribe to newsletter","type":"boolean","required":true}}},
+                    null,
+                    null,
+                    "This is a registration form example. Note that the `pattern` field uses Regex, if you have `\\` backslash, remember to use double `\\\\` backslash to escape it or else the Regex won't work."],
+                ["Range input type",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"range":{"type":"string","title":"A numeric range","format":"range","minimum":10,"maximum":50,"step":5,"description":"This range has a minimum of 10, maximum of 50, and a step of 5."}}},
+                    null,
+                    null,
+                    "You can adjust the minimum and maximum value of the range by specifying the `minimum` and `maximum` field, and also the increment by using `step` field."],
+                ["Phone number input type",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"telephone_number":{"type":"string","title":"Phone number","format":"tel","pattern":"^[\\d \\-()+]*$","description":"This regex accepts digits, round brackets (), dashes (-) and plus sign (+). Eg: +60(11)-123-1234","required":true}}},
+                    null,
+                    null,
+                    "This is the `tel` input type example. It may looks no difference than a normal textbox but it alters the keyboard for mobile devices when inputting the value. Most phone devices would allows digit and certain symbol input only when it detects the input type `tel`."],
+                ["URL input type example",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"url":{"type":"string","title":"URL","format":"url","description":"A URL field"}}},
+                    null,
+                    null,
+                    "URL input type field. Default regex pattern is `/(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/`. Custom pattern validation can be override with specifying the field `pattern` in the schema."
+                ],
                 [
                     "Contact form example",
                     {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"name":{"type":"string","title":"Your name","required":true},"email":{"type":"string","title":"Your email","format":"email","required":true},"telephone":{"type":"string","title":"Your telephone","format":"tel"},"customer":{"type":"boolean","title":"Existing customer","required":true},"accountId":{"dependsOn":["customer"]},"enquiry":{"type":"string","title":"Your enquiry","format":"text","required":true}}},
@@ -174,17 +205,17 @@
                 $("#jsonAlert").hide();
                 try {
                     message = "The was a syntax error in the schema JSON";
-                    tabId = "schema";
+                    tabId = "schema-tab";
                     eval("schema=" + inputString.schema);
                     if (inputString.data) {
                         message = "The was a syntax error in the initial data JSON";
-                        tabId = "data";
+                        tabId = "data-tab";
                         eval("data=" + inputString.data);
                     } else {
                         data = null;
                     }
                     if (inputString.resolver) {
-                        tabId = "resolver";
+                        tabId = "resolver-tab";
                         message = "The was a syntax error in the resolver code";
                         eval("resolver=" + inputString.resolver);
                         if ("function" !== typeof resolver) {
@@ -193,7 +224,7 @@
                     }
                 } catch (err) {
                     document.getElementById('error-message').innerHTML = message + (err ? ". " + err : "");
-                    $('[href=#' + tabId + ']').tab('show');
+                    $('button[id=' + tabId + ']').tab('show');
                     $("#jsonAlert").show();
                     return;
                 }
@@ -261,8 +292,8 @@
                                 <div role="tabpanel" class="tab-pane fade " id="data" role="tabpanel" aria-labelledby="data-tab"></div>
                                 <div role="tabpanel" class="tab-pane fade " id="resolver" role="tabpanel" aria-labelledby="resolver-tab"></div>
                             </div>
-                            <div class="alert alert-danger in" role="alert" id="jsonAlert" style="display:none">
-                                <a href="#" onclick='$("#jsonAlert").hide();' class="close" >&times;</a>
+                            <div class="alert alert-danger in" role="alert" id="jsonAlert" style="display:none; margin-top:1rem;">
+                                <span onclick='$("#jsonAlert").hide();' class="close" >&times;</span>
                                 <strong>Error!</strong> <span id="error-message"></span>
                             </div>
                             <button class="btn btn-primary mt-3" onclick="generateForm()">Create form</button>
@@ -317,7 +348,6 @@
                 codeMirrors[selectedTab].setValue(inputString[selectedTab]);
             }
             );
-
         </script>
     </body>
 </html> 
