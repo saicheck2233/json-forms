@@ -156,6 +156,13 @@
                     null,
                     null,
                     "URL input type field. Default regex pattern is `/(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/`. Custom pattern validation can be override with specifying the field `pattern` in the schema."
+                ],
+                [
+                    "Delivery feedback form example",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"name":{"title":"Full Name","required":true,"type":"string"},"address":{"title":"Address","type":"string","required":true},"city":{"title":"City","type":"string","required":true},"postcode":{"title":"Postcode","type":"number","required":true},"state":{"title":"State","type":"string","required":true},"deliveryCondition":{"title":"Was your parcel in good condition","type":"boolean","format":"radio","required":true,"enum":["Yes","Partly","No"]},"satisfaction":{"title":"Rate our service","type":"string","format":"range","minimum":1,"maximum":5},"comment":{"title":"Comments","type":"string","format":"text"}}},
+                    null,
+                    null,
+                    "This is a delivery feedback form example."
                 ]
             ];
 
