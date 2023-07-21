@@ -685,21 +685,24 @@ if (typeof brutusin === "undefined") {
                 for (var prop in s.properties) {
                     var tr = document.createElement("tr");
                     var td1 = document.createElement("td");
-                    td1.className = "prop-name";
+                    td1.className = "form-group row";
+                    var divLabel = document.createElement("div");
+                    divLabel.className = "col-md-2";
                     var propId = id + "." + prop;
                     var propSchema = getSchema(getSchemaId(propId));
-                    var td2 = document.createElement("td");
-                    td2.className = "prop-value";
+                    var divValue = document.createElement("div");
+                    divValue.className = "col-md-10";
 
                     appendChild(tbody, tr, propSchema);
                     appendChild(tr, td1, propSchema);
-                    appendChild(tr, td2, propSchema);
+                    appendChild(td1, divLabel, propSchema);
+                    appendChild(td1, divValue, propSchema);
                     var pp = createStaticPropertyProvider(prop);
                     var propInitialValue = null;
                     if (value) {
                         propInitialValue = value[prop];
                     }
-                    render(td1, td2, propId, current, pp, propInitialValue);
+                    render(divLabel, divValue, propId, current, pp, propInitialValue);
                 }
             }
             var usedProps = [];
@@ -908,6 +911,7 @@ if (typeof brutusin === "undefined") {
             initialValue = data;
             var form = document.createElement("form");
             form.className = "brutusin-form";
+            form.id = "brutusin-form";
             form.onsubmit = function (event) {
                 return false;
             };

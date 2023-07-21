@@ -23,6 +23,7 @@
         <script src="lib/codemirror/codemirror.js"></script>
         <script src="lib/codemirror/codemirror-javascript.js"></script>
         <script src="lib/markdown.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js" integrity="sha512-CJXg3iK9v7yyWvjk2npXkQjNQ4C1UES1rQaNB7d7ZgEVX2a8/2BmtDmtTclW4ial1wQ41cU34XPxOw+6xJBmTQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/i18n/defaults-en_US.min.js" integrity="sha512-29UqgjaGxHyaEq1vJw4Q20iw6gBOMJDEUud/MNhXrJK6avCLukZ3eQf93AG7dywglnx21FoBvmHHBzP32O2YUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <!--
@@ -92,7 +93,7 @@
                     null,
                     "`textarea` rendering for `string` schemas"],
                 ["Custom string formats",
-                    {"$schema": "http://json-schema.org/draft-03/schema#", "type": "object", "properties": {"file": {"type": "string", "format": "inputstream", "description": "Using a custom format decorator with **bootstrapIcon** via `addFormatDecorator(...)` of the bootstrap extension script"}, "color": {"type": "string", "format": "color", "description": "Using a custom format decorator via `addFormatDecorator(...)` of the bootstrap extension script"}, "date": {"type": "string", "format": "date", "description": "Using a custom format decorator with Bootstrap Icon via `addFormatDecorator(...)` of the bootstrap extension script"}}},
+                {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"customFileType":{"type":"string","format":"inputstream","description":"Using a custom format decorator with **bootstrapIcon** via `addFormatDecorator(...)` of the bootstrap extension script"},"defaultFileType":{"type":"string","media":true,"description":"This is the default file type UI"},"color":{"type":"string","format":"color","description":"Using a custom format decorator via `addFormatDecorator(...)` of the bootstrap extension script"},"date":{"type":"string","format":"date","description":"Using a custom format decorator with Bootstrap Icon via `addFormatDecorator(...)` of the bootstrap extension script"}}},
                     null,
                     null,
                     "Input types can be chosen for custom `string` schema formats via `BrutusinForms.bootstrap.addFormatDecorator(...)`. See current registered decorators at this page source code."],
@@ -155,14 +156,23 @@
                     {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"url":{"type":"string","title":"URL","format":"url","description":"A URL field"}}},
                     null,
                     null,
-                    "URL input type field. Default regex pattern is `/(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/`. Custom pattern validation can be override with specifying the field `pattern` in the schema."
-                ],
-                [
-                    "Product listing form example",
+                    "URL input type field. Default regex pattern is `/(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/`. Custom pattern validation can be override with specifying the field `pattern` in the schema."],
+                ["Product listing form example",
                     {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"image":{"type":"string","media":true,"title":"Image","required":true},"productName":{"type":"string","title":"Product Name","required":true},"brand":{"type":"string","title":"Brand","required":true},"category":{"title":"Category","type":"string","required":true,"enum":["Automotive","Beverages","Babies & Toys","Electronic Accessories","Electronic Devices","Food","Groceries","Health & Beauty","Home Appliances","Home & Lifestyle","Kid's Fashion & Accessories","Men's Fashion & Accessories","Sports & Lifestyle","Women's Fashion & Accessories"]},"description":{"type":"string","format":"text","title":"Product Description"},"weight":{"type":"number","title":"Weight (g)","required":true},"quantity":{"type":"number","title":"Quantity","minimum":0,"required":true},"price":{"type":"number","title":"Price","minimum":0,"required":true},"variants":{"type":"array","title":"Variants","uniqueItems":true,"items":{"description":"Add product variant","type":"object","properties":{"variantName":{"type":"string","title":"Variant name","description":"Eg: Colour","required":true},"variantValue":{"type":"array","title":"Variant Values","items":{"type":"object","properties":{"value":{"type":"string","title":"Value","description":"Eg: Blue","required":true},"quantity":{"type":"number","title":"Quantity","minimum":0,"required":true},"price":{"type":"number","title":"Price","minimum":0,"required":true}}}}}}},"availability":{"type":"boolean","title":"Availability","default":true,"required":true}}},
                     null,
                     null,
                     "This is a product listing form example."
+                    "URL input type field. Default regex pattern is `/(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/`. Custom pattern validation can be override with specifying the field `pattern` in the schema."],
+                ["Delivery feedback form example",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"name":{"title":"Full Name","required":true,"type":"string"},"address":{"title":"Address","type":"string","required":true},"city":{"title":"City","type":"string","required":true},"postcode":{"title":"Postcode","type":"number","required":true},"state":{"title":"State","type":"string","required":true},"deliveryCondition":{"title":"Was your parcel in good condition","type":"boolean","format":"radio","required":true,"enum":["Yes","Partly","No"]},"satisfaction":{"title":"Rate our service","type":"string","format":"range","minimum":1,"maximum":5},"comment":{"title":"Comments","type":"string","format":"text"}}},
+                    null,
+                    null,
+                    "This is a delivery feedback form example."];
+                ["Contact form example",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"name":{"type":"string","title":"Your name","required":true},"email":{"type":"string","title":"Your email","format":"email","required":true},"telephone":{"type":"string","title":"Your telephone","format":"tel"},"customer":{"type":"boolean","title":"Existing customer","required":true},"accountId":{"dependsOn":["customer"]},"enquiry":{"type":"string","title":"Your enquiry","format":"text","required":true}}},
+                    null,
+                    "function (names, data, cb) {\n    var schemas = new Object();\n    var schema = new Object();\n    if (data.customer === true) {\n        schema.type = \"string\";\n        schema.title = \"Account ID\";\n        schema.required = true;\n    }\n    schemas[\"$.accountId\"] = schema;\n    setTimeout(function(){cb(schemas)},500);\n}",
+                    "A contact form example with dynamic schema"
                 ]
             ];
 
@@ -247,6 +257,11 @@
                 bf.render(container, data);
             }
 
+            function resetForm(){
+                var element = document.getElementById("brutusin-form");
+                element.reset();
+            }
+
         </script>
 
     </head>
@@ -313,9 +328,9 @@
                             <div class="alert alert-secondary" role="alert"><strong id="example-title"></strong><div id="example-desc"></div></div>
                             <div id='container' style="padding-left:12px;padding-right:12px;padding-bottom: 12px;"></div>
                             <div class="panel-footer">
-                                <button class="btn btn-primary" onclick="alert(JSON.stringify(bf.getData(), null, 4))">getData()</button>&nbsp;<button class="btn btn-primary" onclick="if (bf.validate()) {
-                                            alert('Validation succeeded')
-                                        }">validate()</button>
+                                <button class="btn btn-primary" onclick="alert(JSON.stringify(bf.getData(), null, 4))">getData()</button>&nbsp;
+                                <button class="btn btn-primary" onclick="if (bf.validate()) { alert('Validation succeeded') }">validate()</button>&nbsp;
+                                <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
                             </div>
                         </div>
                     </div>

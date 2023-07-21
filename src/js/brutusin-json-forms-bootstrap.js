@@ -26,6 +26,10 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     console.warn("Include bootstrap-select.js (https://github.com/silviomoreto/bootstrap-select) to turn native selects into bootstrap components");
 }
 
+if ("undefined" === typeof bsCustomFileInput && window.console) {
+    console.warn("Include bs-custom-file-input.min.js (https://github.com/Johann-S/bs-custom-file-input) to have a more interative UI for file selection");
+}
+
 (function () {
     var BrutusinForms = brutusin["json-forms"];
 
@@ -33,7 +37,7 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     BrutusinForms.addDecorator(function (element, schema) {
         if (element.tagName) {
             var tagName = element.tagName.toLowerCase();
-            if (tagName === "input" && (element.type !== "checkbox" && element.type !== "radio" && element.type !== "range") || tagName === "textarea") {
+            if (tagName === "input" && (element.type !== "file" && element.type !== "checkbox" && element.type !== "radio" && element.type !== "range") || tagName === "textarea") {
                 element.className += " form-control";
             } else if (tagName === "select") {
                 element.className += " form-control";
@@ -45,6 +49,19 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
                     }
                 }
                 element.className += " btn btn-warning btn-sm";
+            } else if (tagName === "input" && element.type === "file") {
+                element.className += " custom-file-input";
+                var label = document.createElement("label");
+                label.className = "custom-file-label";
+                label.innerHTML = "Choose file";
+                label.setAttribute("for", element.id);
+                element.parentNode.classList.add("custom-file");
+                element.parentNode.appendChild(label);
+                if ("undefined" !== typeof bsCustomFileInput || "undefined" !== typeof $) {
+                    $(document).ready(function () {
+                        bsCustomFileInput.init();
+                    });
+                }
             }
         }
     });
@@ -263,63 +280,21 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     BrutusinForms.onResolutionFinished = BrutusinForms.bootstrap.hideLoading;
 
     BrutusinForms.onValidationSuccess = function (element) {
-        element.parentNode.className = element.parentNode.className.replace(" has-error", "");
+        element.className = element.className.replace(" is-invalid", "");
     }
     BrutusinForms.onValidationError = function (element, message) {
 
-        setTimeout(function () {
-            if (element.tagName === "DIV" && element.childElementCount !== 0) {
-                for (var i = 0; i < element.childElementCount; i++) {
-                    if (element.childNodes[i].tagName === "INPUT") {
-                        element = element.childNodes[i];
-                        break;
-                    }
-                }
-            }
-            var dataToggle = element.getAttribute("data-toggle");
-            var dataTrigger = element.getAttribute("data-trigger");
-            var dataContent = element.getAttribute("data-content");
-            var title = element.title;
-            element.setAttribute("data-toggle", "popover");
-            element.setAttribute("data-trigger", "manual");
-            if ("undefined" === typeof markdown) {
-                element.setAttribute("data-content", message);
-            } else {
-                element.setAttribute("data-content", markdown.toHTML(message));
-            }
-
-            element.title = BrutusinForms.messages["validationError"];
-            if (!element.parentNode.className.includes("has-error")) {
-                element.parentNode.className += " has-error";
-            }
-            element.focus();
-            $(element).popover({
-                placement: 'top',
-                container: 'body',
-                html: true
-            });
-            $(element).popover("show");
-            var onblur = element.onblur;
-            element.onblur = function (e) {
-                if (dataToggle) {
-                    $(element).popover('hide');
-                    element.setAttribute("data-toggle", dataToggle);
-                    element.setAttribute("data-trigger", dataTrigger);
-                    element.setAttribute("data-content", dataContent);
-                } else {
-                    $(element).popover('destroy');
-                    element.removeAttribute("data-toggle");
-                    element.removeAttribute("data-trigger");
-                    element.removeAttribute("data-content");
-                }
-
-                element.onblur = onblur;
-                element.title = title;
-                if (onblur) {
-                    onblur();
-                }
-            }
-        },
-                200);
+        var div = document.createElement("div");
+        div.className = "invalid-feedback";
+        if ("undefined" === typeof markdown) {
+            div.innerHTML = message;
+        } else {
+            div.innerHTML = markdown.toHTML(message);
+        }
+        element.parentNode.appendChild(div);
+        element.title = BrutusinForms.messages["validationError"];
+        if (!element.className.includes("is-invalid")) {
+            element.className += " is-invalid";
+        }
     }
 }());

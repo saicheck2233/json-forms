@@ -91,7 +91,6 @@ form.brutusin-form table table{
 form.brutusin-form td {
     vertical-align: top;
     padding: 4px;
-    white-space: nowrap;
 }
 form.brutusin-form td.prop-name {
     text-align: right;
@@ -201,4 +200,7 @@ blockquote {
 }
 .close {
     cursor: pointer;
+}
+.form-check.is-invalid .form-check-label {
+    color: #dc3545;
 }
