@@ -156,6 +156,13 @@
                     null,
                     null,
                     "URL input type field. Default regex pattern is `/(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/`. Custom pattern validation can be override with specifying the field `pattern` in the schema."
+                ],
+                [
+                    "Contact form example",
+                    {"$schema":"http://json-schema.org/draft-03/schema#","type":"object","properties":{"name":{"type":"string","title":"Your name","required":true},"email":{"type":"string","title":"Your email","format":"email","required":true},"telephone":{"type":"string","title":"Your telephone","format":"tel"},"customer":{"type":"boolean","title":"Existing customer","required":true},"accountId":{"dependsOn":["customer"]},"enquiry":{"type":"string","title":"Your enquiry","format":"text","required":true}}},
+                    null,
+                    "function (names, data, cb) {\n    var schemas = new Object();\n    var schema = new Object();\n    if (data.customer === true) {\n        schema.type = \"string\";\n        schema.title = \"Account ID\";\n        schema.required = true;\n    }\n    schemas[\"$.accountId\"] = schema;\n    setTimeout(function(){cb(schemas)},500);\n}",
+                    "A contact form example with dynamic schema"
                 ]
             ];
 
