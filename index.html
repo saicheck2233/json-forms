@@ -247,6 +247,11 @@
                 bf.render(container, data);
             }
 
+            function resetForm(){
+                var element = document.getElementById("brutusin-form");
+                element.reset();
+            }
+
         </script>
 
     </head>
@@ -313,9 +318,9 @@
                             <div class="alert alert-secondary" role="alert"><strong id="example-title"></strong><div id="example-desc"></div></div>
                             <div id='container' style="padding-left:12px;padding-right:12px;padding-bottom: 12px;"></div>
                             <div class="panel-footer">
-                                <button class="btn btn-primary" onclick="alert(JSON.stringify(bf.getData(), null, 4))">getData()</button>&nbsp;<button class="btn btn-primary" onclick="if (bf.validate()) {
-                                            alert('Validation succeeded')
-                                        }">validate()</button>
+                                <button class="btn btn-primary" onclick="alert(JSON.stringify(bf.getData(), null, 4))">getData()</button>&nbsp;
+                                <button class="btn btn-primary" onclick="if (bf.validate()) { alert('Validation succeeded') }">validate()</button>&nbsp;
+                                <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
                             </div>
                         </div>
                     </div>
