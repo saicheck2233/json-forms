@@ -26,6 +26,10 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     console.warn("Include bootstrap-select.js (https://github.com/silviomoreto/bootstrap-select) to turn native selects into bootstrap components");
 }
 
+if ("undefined" === typeof bsCustomFileInput && window.console) {
+    console.warn("Include bs-custom-file-input.min.js (https://github.com/Johann-S/bs-custom-file-input) to have a more interative UI for file selection");
+}
+
 (function () {
     var BrutusinForms = brutusin["json-forms"];
 
@@ -33,7 +37,7 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
     BrutusinForms.addDecorator(function (element, schema) {
         if (element.tagName) {
             var tagName = element.tagName.toLowerCase();
-            if (tagName === "input" && (element.type !== "checkbox" && element.type !== "radio" && element.type !== "range") || tagName === "textarea") {
+            if (tagName === "input" && (element.type !== "file" && element.type !== "checkbox" && element.type !== "radio" && element.type !== "range") || tagName === "textarea") {
                 element.className += " form-control";
             } else if (tagName === "select") {
                 element.className += " form-control";
@@ -45,6 +49,19 @@ if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === 
                     }
                 }
                 element.className += " btn btn-warning btn-sm";
+            } else if (tagName === "input" && element.type === "file") {
+                element.className += " custom-file-input";
+                var label = document.createElement("label");
+                label.className = "custom-file-label";
+                label.innerHTML = "Choose file";
+                label.setAttribute("for", element.id);
+                element.parentNode.classList.add("custom-file");
+                element.parentNode.appendChild(label);
+                if ("undefined" !== typeof bsCustomFileInput || "undefined" !== typeof $) {
+                    $(document).ready(function () {
+                        bsCustomFileInput.init();
+                    });
+                }
             }
         }
     });
