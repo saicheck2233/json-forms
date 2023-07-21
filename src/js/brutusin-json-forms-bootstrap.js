@@ -280,70 +280,21 @@ if ("undefined" === typeof bsCustomFileInput && window.console) {
     BrutusinForms.onResolutionFinished = BrutusinForms.bootstrap.hideLoading;
 
     BrutusinForms.onValidationSuccess = function (element) {
-        if (element.tagName === "DIV" && element.childElementCount !== 0) {
-            for (var i = 0; i < element.childElementCount; i++) {
-                if (element.childNodes[i].tagName === "INPUT") {
-                    element.childNodes[i].className = element.childNodes[i].className.replace(" is-invalid", "");
-                }
-            }
-        }
         element.className = element.className.replace(" is-invalid", "");
     }
     BrutusinForms.onValidationError = function (element, message) {
 
-        setTimeout(function () {
-            if (element.tagName === "DIV" && element.childElementCount !== 0) {
-                for (var i = 0; i < element.childElementCount; i++) {
-                    if (element.childNodes[i].tagName === "INPUT") {
-                        element = element.childNodes[i];
-                        break;
-                    }
-                }
-            }
-            var dataToggle = element.getAttribute("data-toggle");
-            var dataTrigger = element.getAttribute("data-trigger");
-            var dataContent = element.getAttribute("data-content");
-            var title = element.title;
-            element.setAttribute("data-toggle", "popover");
-            element.setAttribute("data-trigger", "manual");
-            if ("undefined" === typeof markdown) {
-                element.setAttribute("data-content", message);
-            } else {
-                element.setAttribute("data-content", markdown.toHTML(message));
-            }
-
-            element.title = BrutusinForms.messages["validationError"];
-            if (!element.className.includes("is-invalid")) {
-                element.className += " is-invalid";
-            }
-            element.focus();
-            $(element).popover({
-                placement: 'top',
-                container: 'body',
-                html: true
-            });
-            $(element).popover("show");
-            var onblur = element.onblur;
-            element.onblur = function (e) {
-                if (dataToggle) {
-                    $(element).popover('hide');
-                    element.setAttribute("data-toggle", dataToggle);
-                    element.setAttribute("data-trigger", dataTrigger);
-                    element.setAttribute("data-content", dataContent);
-                } else {
-                    $(element).popover('dispose');
-                    element.removeAttribute("data-toggle");
-                    element.removeAttribute("data-trigger");
-                    element.removeAttribute("data-content");
-                }
-
-                element.onblur = onblur;
-                element.title = title;
-                if (onblur) {
-                    onblur();
-                }
-            }
-        },
-                200);
+        var div = document.createElement("div");
+        div.className = "invalid-feedback";
+        if ("undefined" === typeof markdown) {
+            div.innerHTML = message;
+        } else {
+            div.innerHTML = markdown.toHTML(message);
+        }
+        element.parentNode.appendChild(div);
+        element.title = BrutusinForms.messages["validationError"];
+        if (!element.className.includes("is-invalid")) {
+            element.className += " is-invalid";
+        }
     }
 }());
