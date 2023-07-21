@@ -201,3 +201,6 @@ blockquote {
 .close {
     cursor: pointer;
 }
+.form-check.is-invalid .form-check-label {
+    color: #dc3545;
+}
