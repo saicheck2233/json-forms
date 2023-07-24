@@ -107,7 +107,7 @@ if (typeof brutusin === "undefined") {
     BrutusinForms.decorators = new Array();
 
     /**
-     * 
+     * Register a callback function to be notified after an HTML element has been rendered (passed as parameter). See brutusin-json-forms-bootstrap.js for an example of bootstrap decorator.
      * @static
      * @name BrutusinForms.addDecorator
      * @param {type} f 
@@ -117,7 +117,7 @@ if (typeof brutusin === "undefined") {
     };
 
     /**
-     * When just starting to resolve a schema
+     * Register a callback function to be notified when just starting to resolve a schema
      * @static
      * @name BrutusinForms.onResolutionStarted
      * @param {HTMLElement} element 
@@ -126,7 +126,7 @@ if (typeof brutusin === "undefined") {
     };
 
     /**
-     * When the resolution is completed
+     * Register a callback function to be notified when the resolution is completed
      * @static
      * @name BrutusinForms.onResolutionFinished
      * @param {HTMLElement} element 
