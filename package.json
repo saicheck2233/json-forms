@@ -1,6 +1,6 @@
 {
   "name": "brutusin-json-forms",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Brutusin json-forms is a JSON Schema to HTML form generator, supporting dynamic subschemas (on the fly resolution). Extensible and customizable library with zero dependencies. Bootstrap add-ons provided",
   "repository": "idelvall/brutusin-json-forms",
   "main": "dist/js/brutusin-json-forms.min.js",
@@ -8,7 +8,9 @@
   "homepage": "http://brutusin.org/json-forms/",
   "author": "Ignacio del Valle Alles <idelvall@brutusin.org> (http://brutusin.org)",
   "license": "Apache-2.0",
-  "dependencies": {},
+  "dependencies": {
+    "jsdoc": "^4.0.2"
+  },
   "keywords": [
     "form",
     "json",
@@ -47,5 +49,8 @@
       "brutusin-json-forms-jsonsrv.js",
       "brutusin-json-forms-jsonsrv.min.js"
     ]
+  },
+  "scripts": {
+    "jsdoc": "jsdoc -c jsdoc-config.json"
   }
 }

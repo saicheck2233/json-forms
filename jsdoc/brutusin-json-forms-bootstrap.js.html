@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: brutusin-json-forms-bootstrap.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: brutusin-json-forms-bootstrap.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2015 brutusin.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author Ignacio del Valle Alles idelvall@brutusin.org
+ */
+if ("undefined" === typeof brutusin || "undefined" === typeof brutusin["json-forms"]) {
+    throw new Error("brutusin-json-forms-bootstrap.js requires brutusin-json-forms.js");
+}
+if ("undefined" === typeof markdown &amp;&amp; window.console) {
+    console.warn("Include markdown.js (https://github.com/evilstreak/markdown-js) to add markdown support in property description popups");
+}
+
+if (("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === typeof $.fn.selectpicker) &amp;&amp; window.console) {
+    console.warn("Include bootstrap-select.js (https://github.com/silviomoreto/bootstrap-select) to turn native selects into bootstrap components");
+}
+
+if ("undefined" === typeof bsCustomFileInput &amp;&amp; window.console) {
+    console.warn("Include bs-custom-file-input.min.js (https://github.com/Johann-S/bs-custom-file-input) to have a more interative UI for file selection");
+}
+
+(function () {
+    var BrutusinForms = brutusin["json-forms"];
+
+    /**
+     * **This is callback function extended from the main class**
+     * Add bootstrap class into the input fields.
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     * @param {Object} schema - The JSON schema
+     */
+    BrutusinForms.addDecorator(function (element, schema) {
+        if (element.tagName) {
+            var tagName = element.tagName.toLowerCase();
+            if (tagName === "input" &amp;&amp; (element.type !== "file" &amp;&amp; element.type !== "checkbox" &amp;&amp; element.type !== "radio" &amp;&amp; element.type !== "range") || tagName === "textarea") {
+                element.className += " form-control";
+            } else if (tagName === "select") {
+                element.className += " form-control";
+            } else if (tagName === "button") {
+                if (element.className === "remove") {
+                    element.className += " bi bi-x";
+                    while (element.firstChild) {
+                        element.removeChild(element.firstChild);
+                    }
+                }
+                element.className += " btn btn-warning btn-sm";
+            } else if (tagName === "input" &amp;&amp; element.type === "file") {
+                element.className += " custom-file-input";
+                var label = document.createElement("label");
+                label.className = "custom-file-label";
+                label.innerHTML = "Choose file";
+                label.setAttribute("for", element.id);
+                element.parentNode.classList.add("custom-file");
+                element.parentNode.appendChild(label);
+                if ("undefined" !== typeof bsCustomFileInput || "undefined" !== typeof $) {
+                    $(document).ready(function () {
+                        bsCustomFileInput.init();
+                    });
+                }
+            }
+        }
+    });
+
+    /**
+     * **This is callback function extended from the main class**
+     * Customize the range input value
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     * @param {Object} schema - The JSON schema
+     */
+    BrutusinForms.addDecorator(function (element, schema) {
+        if (element.tagName) {
+            var tagName = element.tagName.toLowerCase();
+            if (tagName === "input" &amp;&amp; element.type === "range") {
+                element.className += " form-control-range";
+                var elementId = element.id;
+                element.setAttribute("oninput", "rangevalue" + elementId.substring(elementId.length - 3, elementId.length) + ".value=value");
+                var output = document.createElement("output");
+                output.id = "rangevalue" + elementId.substring(elementId.length - 3, elementId.length);
+                element.parentNode.appendChild(output);
+            }
+        }
+    });
+
+    /**
+     * **This is callback function extended from the main class**
+     * Add a collapsible form
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     * @param {Object} schema - The JSON schema
+     */
+    BrutusinForms.addDecorator(function (element, schema) {
+        if (schema !== undefined) {
+            if (schema.collapsible !== undefined &amp;&amp; schema.collapsible === true) {
+                var parentElement = element.parentElement;
+                var tagName = parentElement.tagName.toLowerCase();
+                if (tagName === "form") {
+                    parentElement.className += " brutusin-card-body";
+                    var formParentElement = parentElement.parentElement;
+
+                    var divCard = document.createElement("div");
+                    divCard.className = "brutusin-card";
+                    divCard.innerHTML = "&lt;div class='brutusin-card-header'>&lt;a id='expand-btn' class='btn btn-link' data-toggle='collapse' data-target='#brutusin-form-collapsible' aria-expanded='true' aria-controls='brutusin-form-collapsible'>&lt;/a>&lt;/div>";
+
+                    var divCardBody = document.createElement("div");
+                    divCardBody.className = "collapse show";
+                    divCardBody.id = "brutusin-form-collapsible";
+                    divCardBody.setAttribute("aria-expanded", "true");
+                    divCardBody.appendChild(parentElement);
+                    divCard.appendChild(divCardBody);
+                    
+                    formParentElement.appendChild(divCard);
+
+                    if (schema.title !== undefined) {
+                        document.getElementById("expand-btn").textContent = schema.title;
+                    }
+                }
+            } 
+        }
+    });
+    
+
+    /**
+     * **This is callback function extended from the main class**
+     * Add an info icon beside the label to show the description
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     * @param {Object} schema - The JSON schema
+     */
+    BrutusinForms.addDecorator(function (element, schema) {
+        if (element.tagName) {
+            var tagName = element.tagName.toLowerCase();
+            if (tagName === "label" || tagName === "button") {
+                if (element.title) {
+                    var helpLink = document.createElement("i");
+                    helpLink.setAttribute("style", "outline: 0; text-decoration: none; margin-left: 2px;");
+                    helpLink.setAttribute("tabIndex", -1);
+                    helpLink.className = "bi bi-info-circle-fill"
+                    helpLink.setAttribute("data-toggle", "popover");
+                    helpLink.setAttribute("data-trigger", "hover");
+                    if ("undefined" === typeof markdown) {
+                        helpLink.setAttribute("data-content", element.title);
+                    } else {
+                        helpLink.setAttribute("data-content", markdown.toHTML(element.title));
+                    }
+                    if (schema.title) {
+                        helpLink.title = schema.title;
+                    } else {
+                        helpLink.title = "Help";
+                    }
+                    $(helpLink).popover({
+                        placement: 'top',
+                        container: 'body',
+                        html: !("undefined" === typeof markdown)
+                    });
+                    if (tagName === "label") {
+                        element.appendChild(helpLink);
+                    }
+                    else if (tagName === "button") {
+                        element.parentNode.appendChild(helpLink);
+                    }
+                }
+            }
+        }
+    });
+
+// Popover over inputs
+//BrutusinForms.addDecorator(function (element, schema) {
+//if (element.tagName) {
+//        if (element.title &amp;&amp; (tagName === "input" || tagName === "textarea" || tagName === "select")) {
+//            element.setAttribute("data-toggle", "tooltip");
+//            element.setAttribute("data-trigger", "focus");
+//            if ("undefined" === typeof markdown) {
+//                element.setAttribute("data-content", element.title);
+//            } else {
+//                element.setAttribute("data-content", markdown.toHTML(element.title));
+//            }
+//            if (schema.title) {
+//                element.title = schema.title;
+//            } else {
+//                element.title = "Help";
+//            }
+//            $(element).popover({
+//                placement: 'top',
+//                container: 'body',
+//                html: !("undefined" === typeof markdown)
+//            });
+//        }input
+//    }
+//});
+
+    /**
+     * **This is callback function extended from the main class**
+     * Add a 3rd party library bootstrap-select for changing the `select` UI layout
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     * @param {Object} schema - The JSON schema
+     */
+    BrutusinForms.addDecorator(function (element, schema) {
+        if (element.tagName) {
+            var tagName = element.tagName.toLowerCase();
+            // https://github.com/silviomoreto/bootstrap-select
+            if (!("undefined" === typeof $ || "undefined" === typeof $.fn || "undefined" === typeof $.fn.selectpicker) &amp;&amp; tagName === "select") {
+                element.title = "";
+                element.className += " selectpicker";
+                element.setAttribute("data-live-search", true);
+                $(element).selectpicker();
+            }
+        }
+    });
+
+    BrutusinForms.bootstrap = new Object();
+
+    /**
+     * **This is callback function extended from the main class**
+     * Add `format` type to the input field
+     * 
+     * @param {string} format - The format type. Eg: "password", "email"
+     * @param {string} inputType - The input type from the JSON schema
+     * @param {string} bootstrapIcon - The Bootstrap Icon name
+     * @param {string} titleDecorator - The title decorator
+     * @param {CallableFunction} cb - Callback function
+     */
+    BrutusinForms.bootstrap.addFormatDecorator = function (format, inputType, bootstrapIcon, titleDecorator, cb) {
+        BrutusinForms.addDecorator(function (element, schema) {
+            if (element.tagName) {
+                var tagName = element.tagName.toLowerCase();
+                if (tagName === "input" &amp;&amp; schema.type === "string" &amp;&amp; schema.format === format) {
+                    if (inputType) {
+                        element.type = inputType;
+                    }
+                    if (bootstrapIcon) {
+                        var parent = element.parentNode;
+                        var table = document.createElement("table");
+                        table.setAttribute("style", "border:none;margin:0");
+                        var tr = document.createElement("tr");
+                        var td1 = document.createElement("td");
+                        td1.setAttribute("style", "width:100%; padding:0;padding-right:4px");
+                        table.appendChild(tr);
+                        tr.appendChild(td1);
+                        parent.removeChild(element);
+                        td1.appendChild(element);
+                        parent.appendChild(table);
+                        var td = document.createElement("td");
+                        tr.appendChild(td);
+                        td.setAttribute("style", "padding:0");
+                        var searchButton = document.createElement("button");
+                        searchButton.className = "btn btn-default bi " + bootstrapIcon;
+                        searchButton.onclick = function () {
+                            cb(element);
+                        };
+                        td.appendChild(searchButton);
+                    }
+                }
+            }
+
+            if (element instanceof Text) {
+                var tagName = element.parentElement.tagName.toLowerCase();
+                if (tagName === "label" &amp;&amp; titleDecorator) {
+                    element.textContent = element.textContent + titleDecorator;
+                }
+            }
+        });
+    };
+
+    /**
+     * Adds a loading animation
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     */
+    BrutusinForms.bootstrap.showLoading = function (element) {
+        if (element &amp;&amp; element.parentNode) {
+            var loadingId = element.id + "_loading";
+            var loadingLayerId = element.id + "_loading-layer";
+            var loading = document.getElementById(loadingId);
+            var loadingLayer = document.getElementById(loadingLayerId);
+            if (!loading) {
+                var tagName = element.tagName.toLowerCase();
+                element.parentNode.style.position = "relative";
+                loading = document.createElement("span");
+                loading.id = loadingId;
+                loading.className = "spinner-border";
+                if (tagName === "select") {
+                    loading.className += " loading-icon-select";
+                } else if (element.type === "checkbox") {
+                    loading.className += " loading-icon-checkbox";
+                } else {
+                    loading.className += " loading-icon";
+                }
+                element.parentNode.appendChild(loading);
+                loadingLayer = document.createElement("div");
+                loadingLayer.className = "loading-layer";
+                loadingLayer.appendChild(document.createTextNode(""));
+                loadingLayer.id = loadingLayerId;
+                element.parentNode.appendChild(loadingLayer);
+            }
+            loading.style.visibility = "visible";
+            loadingLayer.style.visibility = "visible";
+        }
+    }
+
+    /**
+     * Remove a loading animation
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     */
+    BrutusinForms.bootstrap.hideLoading = function (element) {
+        if (element) {
+            var loadingId = element.id + "_loading";
+            var loadingLayerId = element.id + "_loading-layer";
+            var loading = document.getElementById(loadingId);
+            var loadingLayer = document.getElementById(loadingLayerId);
+            if (loading) {
+                loading.style.visibility = "hidden";
+            }
+            if (loadingLayer) {
+                loadingLayer.style.visibility = "hidden";
+            }
+        }
+    }
+
+    BrutusinForms.onResolutionStarted = BrutusinForms.bootstrap.showLoading;
+    BrutusinForms.onResolutionFinished = BrutusinForms.bootstrap.hideLoading;
+
+    /**
+     * **This is callback function extended from the main class**
+     * Adds a Bootstrap class when the validation is success
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     */
+    BrutusinForms.onValidationSuccess = function (element) {
+        element.className = element.className.replace(" is-invalid", "");
+    }
+
+    /**
+     * **This is callback function extended from the main class**
+     * Adds a Bootstrap class when the validation is failed
+     * 
+     * @param {HTMLElement} element - The HTMLElement
+     */
+    BrutusinForms.onValidationError = function (element, message) {
+
+        var div = document.createElement("div");
+        div.className = "invalid-feedback";
+        if ("undefined" === typeof markdown) {
+            div.innerHTML = message;
+        } else {
+            div.innerHTML = markdown.toHTML(message);
+        }
+        element.parentNode.appendChild(div);
+        element.title = BrutusinForms.messages["validationError"];
+        if (!element.className.includes("is-invalid")) {
+            element.className += " is-invalid";
+        }
+    }
+}());</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BrutusinForms.html">BrutusinForms</a></li><li><a href="Expression.html">Expression</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appendChild">appendChild</a></li><li><a href="global.html#cleanData">cleanData</a></li><li><a href="global.html#cleanSchemaMap">cleanSchemaMap</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#containsStr">containsStr</a></li><li><a href="global.html#createPropertyProvider">createPropertyProvider</a></li><li><a href="global.html#createPseudoSchema">createPseudoSchema</a></li><li><a href="global.html#getDefinition">getDefinition</a></li><li><a href="global.html#getInitialValue">getInitialValue</a></li><li><a href="global.html#getInputId">getInputId</a></li><li><a href="global.html#getParentSchemaId">getParentSchemaId</a></li><li><a href="global.html#getSchema">getSchema</a></li><li><a href="global.html#getSchemaId">getSchemaId</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#onDependencyChanged">onDependencyChanged</a></li><li><a href="global.html#populateSchemaMap">populateSchemaMap</a></li><li><a href="global.html#renameRequiredPropeties">renameRequiredPropeties</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderTitle">renderTitle</a></li><li><a href="global.html#renderers">renderers</a></li><li><a href="global.html#validate">validate</a></li><li><a href="global.html#validateDepencyMapIsAcyclic">validateDepencyMapIsAcyclic</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jul 24 2023 18:33:42 GMT+0800 (Singapore Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

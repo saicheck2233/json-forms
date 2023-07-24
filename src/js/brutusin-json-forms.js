@@ -102,12 +102,14 @@ if (typeof brutusin === "undefined") {
 
     /**
      * Callback functions to be notified after an HTML element has been rendered (passed as parameter).
-     * @type type
+     * @name BrutusinForms.decorators
+     * @callback
+     * @type {array}
      */
     BrutusinForms.decorators = new Array();
 
     /**
-     * Register a callback function to be notified after an HTML element has been rendered (passed as parameter). See brutusin-json-forms-bootstrap.js for an example of bootstrap decorator.
+     * Register a callback function to be notified after an HTML element has been rendered (passed as parameter). See {@link brutusin-json-forms-bootstrap.js} for an example of bootstrap decorator.
      * @static
      * @name BrutusinForms.addDecorator
      * @param {type} f 
@@ -162,6 +164,7 @@ if (typeof brutusin === "undefined") {
     /**
      * Callback function to be notified after a form has been rendered (passed as parameter).
      * @name BrutusinForms.postRender
+     * @callback
      * @type type
      */
     BrutusinForms.postRender = null;
@@ -176,6 +179,17 @@ if (typeof brutusin === "undefined") {
      * @name BrutusinForms.create
      * @static
      * @param {type} schema schema object
+     * @property {object} schemaMap - The schema map extracted from the original schema excluding some fields.
+     * @property {object} dependencyMap - The dependency map that checks which schema is it dependent on.
+     * @property {object} renderInfoMap - The schema that is extracted from the schema resolver.
+     * @property {HTMLElement} container - Container of the rendered form.
+     * @property {object} data - The JSON schema retrieved from the webpage.
+     * @property {string} error - Error message that will be display in the webpage.
+     * @property {(string|number|boolean)} initialValue - The initial value defined in the JSON schema.
+     * @property {number} inputCounter - Counter for the input fields generated, used for input ID generation.
+     * @property {object} root - The `schema` param will be passed into here.
+     * @property {string} formId - The unique form ID will be bind on the `<form id="">`.
+     * @property {object} renderers - Use to identify the input type of the field and renders the form.
      * @returns {BrutusinForms.create.obj|Object|Object.create.obj}
      */
     BrutusinForms.create = function (schema) {
@@ -198,11 +212,6 @@ if (typeof brutusin === "undefined") {
 
         validateDepencyMapIsAcyclic();
 
-        /**
-         * Use to identify the input type of the field and renders the form
-         * @name renderers
-         * @type {object}
-         */
         var renderers = new Object();
 
         renderers["integer"] = function (container, id, parentObject, propertyProvider, value) {
@@ -1127,7 +1136,7 @@ if (typeof brutusin === "undefined") {
          * @see BrutusinForms.addDecorator
          * 
          * @name appendChild
-         * @method
+         * @function
          * @param {HTMLElement} parent - The parent HTMLElement to append with
          * @param {HTMLElement} child - The child HTMLElement that wants to append on the parent
          * @param {Object} [schema] - The schema object
@@ -1163,7 +1172,7 @@ if (typeof brutusin === "undefined") {
         }
 
         /**
-         * Use for `$ref` type. Refer to index.html#11. To get the field properties under the path provided.
+         * Use for `$ref` type. Refer to {@link ./index.html#11}. To get the field properties under the `path` provided.
          * @function
          * @name getDefinition
          * @param {string} path - The path to the defined field.
@@ -1199,11 +1208,11 @@ if (typeof brutusin === "undefined") {
         }
 
         /**
-         * Rename the `required` field to `requiredProperties` for certain property type in the schema to support JSON Schema v4
+         * Rename the `required` field to `requiredProperties` for certain property type in the schema to support JSON Schema v4.
+         * See example {@link ./index.html#8}
          * @function
          * @name renameRequiredPropeties
          * @param {Object} schema - The JSON schema object
-         * @returns 
          */
         function renameRequiredPropeties(schema) {
             if (!schema) {
@@ -1252,7 +1261,6 @@ if (typeof brutusin === "undefined") {
          * @name populateSchemaMap
          * @param {string} name - The schema ID
          * @param {Object} schema - The JSON schema object
-         * @returns 
          */
         function populateSchemaMap(name, schema) {
             var pseudoSchema = createPseudoSchema(schema);
